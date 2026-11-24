@@ -1,0 +1,11 @@
+# /etc/systemd/system/site-sync.timer
+[Unit]
+Description=Pull static site repos every 5 minutes
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=5min
+RandomizedDelaySec=20s
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,21 @@
+# /etc/systemd/system/site-sync.service — started by site-sync.timer.
+# Pulls every repo in /etc/site-sync/repos.list (see site-sync.sh).
+[Unit]
+Description=Fast-forward static site checkouts from GitHub
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=sitesync
+Group=sitesync
+Environment=HOME=/srv/sites
+ExecStart=/usr/local/bin/site-sync
+Nice=10
+
+# It only needs to write inside the site clones.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/srv/sites
