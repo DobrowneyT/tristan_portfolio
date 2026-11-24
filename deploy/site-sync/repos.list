@@ -1,4 +1,7 @@
-# /etc/site-sync/repos.list — one git clone per line, pulled every 5 minutes
-# by site-sync.timer on whatever branch the clone has checked out.
+# /etc/site-sync/repos.list — pulled every 5 minutes by site-sync.timer, on
+# whatever branch each clone has checked out (keep them on `main`).
+#
+# <clone path>                  [deploy command, run as root in the clone, only when HEAD changed]
 /srv/sites/tristan_portfolio
 /srv/sites/elena_portfolio
+/home/ubuntu/kidnet             server/install.sh

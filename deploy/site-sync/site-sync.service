@@ -1,21 +1,18 @@
 # /etc/systemd/system/site-sync.service — started by site-sync.timer.
-# Pulls every repo in /etc/site-sync/repos.list (see site-sync.sh).
+# Pulls (and, where listed, deploys) every repo in /etc/site-sync/repos.list.
+# See site-sync.sh for what runs as whom.
+#
+# Runs as root because kidnet's install.sh installs packages, units and nginx
+# config. Git itself runs as each clone's owner. That means: anyone who can push
+# to main of a repo with a deploy command can run code as root here, the same
+# trust the old `sudo server/install.sh` by hand implied.
 [Unit]
-Description=Fast-forward static site checkouts from GitHub
+Description=Pull and deploy *.dobrowney.com sites from GitHub
 After=network-online.target
 Wants=network-online.target
 
 [Service]
 Type=oneshot
-User=sitesync
-Group=sitesync
-Environment=HOME=/srv/sites
 ExecStart=/usr/local/bin/site-sync
+StateDirectory=site-sync
 Nice=10
-
-# It only needs to write inside the site clones.
-NoNewPrivileges=true
-PrivateTmp=true
-ProtectSystem=strict
-ProtectHome=true
-ReadWritePaths=/srv/sites
