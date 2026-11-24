@@ -1,0 +1,70 @@
+{{ define "main" }}
+{{- $r := hugo.Data.resume }}
+<article class="wrap narrow resume">
+  <header class="page-header resume-header">
+    <h1>{{ .Title }}</h1>
+    <a class="button" href="{{ site.Params.resumePDF }}">Download PDF</a>
+  </header>
+
+  <section>
+    <h2>Profile</h2>
+    <p>{{ $r.profile }}</p>
+  </section>
+
+  <section>
+    <h2>Experience</h2>
+    {{- range $r.experience }}
+    <div class="entry">
+      <div class="entry-head"><h3>{{ .title }}</h3><span class="when">{{ .when }}</span></div>
+      <p class="org">{{ .org }}{{ with .location }} · {{ . }}{{ end }}{{ with .note }} <span class="muted">({{ . }})</span>{{ end }}</p>
+      <ul>{{ range .points }}<li>{{ . }}</li>{{ end }}</ul>
+    </div>
+    {{- end }}
+  </section>
+
+  <section>
+    <h2>Projects</h2>
+    {{- range $r.projects }}
+    <div class="entry">
+      <div class="entry-head"><h3>{{ with .page }}<a href="{{ . }}">{{ end }}{{ .name }}{{ with .page }}</a>{{ end }}</h3><span class="when">{{ .where }}</span></div>
+      <ul>{{ range .points }}<li>{{ . }}</li>{{ end }}</ul>
+    </div>
+    {{- end }}
+  </section>
+
+  <section>
+    <h2>Skills</h2>
+    <dl class="skills">
+      {{- range $r.skills }}<div><dt>{{ .name }}</dt><dd>{{ .items }}</dd></div>{{ end }}
+    </dl>
+  </section>
+
+  <section>
+    <h2>Education</h2>
+    {{- with $r.education }}
+    <div class="entry">
+      <div class="entry-head"><h3>{{ .school }}</h3><span class="when">{{ .when }}</span></div>
+      <p class="org">{{ .degree }}</p>
+    </div>
+    {{- end }}
+  </section>
+
+  <section>
+    <h2>Student groups</h2>
+    {{- range $r.groups }}
+    <div class="entry">
+      <div class="entry-head"><h3>{{ .title }}</h3><span class="when">{{ .when }}</span></div>
+      <p class="org">{{ .org }}</p>
+      <ul>{{ range .points }}<li>{{ . }}</li>{{ end }}</ul>
+    </div>
+    {{- end }}
+  </section>
+
+  <section>
+    <h2>Awards</h2>
+    <ul class="awards">
+      {{- range $r.awards }}<li><span>{{ .name }}</span><span class="when">{{ .year }}</span></li>{{ end }}
+    </ul>
+  </section>
+</article>
+{{ end }}

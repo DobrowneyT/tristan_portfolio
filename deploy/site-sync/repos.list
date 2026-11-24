@@ -2,6 +2,6 @@
 # whatever branch each clone has checked out (keep them on `main`).
 #
 # <clone path>                  [deploy command, run as root in the clone, only when HEAD changed]
-/srv/sites/tristan_portfolio
+/srv/sites/tristan_portfolio      [ -f hugo.toml ] && runuser -u "$SUDO_USER" -- env HOME="/home/$SUDO_USER" hugo --gc --minify --cleanDestinationDir
 /srv/sites/elena_portfolio
 /home/ubuntu/kidnet             server/install.sh

@@ -1,0 +1,40 @@
+{{ define "main" }}
+<article class="wrap narrow post">
+  <header class="post-header">
+    <p class="eyebrow"><a href="/projects/">Projects</a></p>
+    <h1>{{ .Title }}</h1>
+    {{- with .Params.subtitle }}<p class="subtitle">{{ . }}</p>{{ end }}
+    <dl class="facts">
+      <div><dt>When</dt><dd>{{ with .Params.period }}{{ . }}{{ else }}{{ .Date.Format "January 2006" }}{{ end }}</dd></div>
+      {{- with .Params.context }}<div><dt>Context</dt><dd>{{ . }}</dd></div>{{ end }}
+      {{- with .Params.role }}<div><dt>My part</dt><dd>{{ . }}</dd></div>{{ end }}
+      {{- with .Params.stack }}<div><dt>Stack</dt><dd>{{ delimit . ", " }}</dd></div>{{ end }}
+    </dl>
+    {{- with .Params.links }}
+    <p class="post-links">{{ range . }}<a href="{{ .url }}">{{ .name }}&nbsp;↗</a>{{ end }}</p>
+    {{- end }}
+  </header>
+
+  {{ partial "media.html" . }}
+
+  {{- if and (ne .Params.status "stub") (gt .WordCount 600) }}
+  <details class="toc" open>
+    <summary>Contents</summary>
+    {{ .TableOfContents }}
+  </details>
+  {{- end }}
+
+  <div class="prose">{{ .Content }}</div>
+
+  {{- if eq .Params.status "stub" }}
+  <aside class="note">
+    <p>This is a short summary. The full write-up (how it works, what went right, and what went wrong) is in progress.</p>
+  </aside>
+  {{- end }}
+
+  <nav class="pager" aria-label="More projects">
+    {{- with .PrevInSection }}<a class="prev" href="{{ .RelPermalink }}"><small>Previous</small>{{ .Title }}</a>{{ else }}<span></span>{{ end }}
+    {{- with .NextInSection }}<a class="next" href="{{ .RelPermalink }}"><small>Next</small>{{ .Title }}</a>{{ end }}
+  </nav>
+</article>
+{{ end }}

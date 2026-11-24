@@ -1,0 +1,26 @@
+{{ define "main" }}
+<article class="wrap narrow about">
+  <header class="page-header"><h1>{{ .Title }}</h1></header>
+  <div class="about-grid">
+    <figure class="portrait">
+      {{- with .Resources.GetMatch "portrait.*" }}
+      {{- $img := .Fill "480x600 Center" }}
+      <img src="{{ $img.RelPermalink }}" width="{{ $img.Width }}" height="{{ $img.Height }}" alt="Tristan Dobrowney">
+      {{- else }}
+      <div class="cover-placeholder portrait-placeholder" role="img" aria-label="Photo coming soon"><small>photo coming soon</small></div>
+      {{- end }}
+    </figure>
+    <div class="prose">{{ .Content }}</div>
+  </div>
+
+  <section class="contact" aria-labelledby="contact-heading">
+    <h2 id="contact-heading">Contact</h2>
+    <ul>
+      <li><span>Email</span><a href="mailto:{{ site.Params.email }}">{{ site.Params.email }}</a></li>
+      <li><span>GitHub</span><a href="{{ site.Params.github }}">github.com/DobrowneyT</a></li>
+      <li><span>LinkedIn</span><a href="{{ site.Params.linkedin }}">Tristan Dobrowney</a></li>
+      <li><span>Résumé</span><a href="/resume/">Web version</a> · <a href="{{ site.Params.resumePDF }}">PDF</a></li>
+    </ul>
+  </section>
+</article>
+{{ end }}

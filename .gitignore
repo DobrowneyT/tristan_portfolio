@@ -5,3 +5,7 @@
 .idea/
 node_modules/
 .env
+# Hugo output (built on the VPS by site-sync) and caches
+public/
+resources/_gen/
+.hugo_build.lock

@@ -1,0 +1,162 @@
+# Web résumé (/resume/). Transcribed from the master CV:
+#   ~/Documents/Jobs/ai-job-search/documents/cv/main.tex
+# Keep the two in step. scripts/build-resume.sh rebuilds the PDF from the
+# master and warns when the master changed since this file was last updated.
+# Deliberately left out of the public version: phone number.
+
+profile: >-
+  Systems and embedded engineer at PTx Trimble working across the full stack of an
+  autonomous tractor platform, from harnessing and STM32 firmware through a custom
+  embedded Linux kernel to ROS2 applications. Experienced in fleet provisioning and
+  update infrastructure, CAN/ISOBUS and USB/Ethernet communication, and
+  hardware-software integration, with a computer architecture and instruction-set
+  design focus from university.
+
+experience:
+  - title: Autonomous Systems Engineer, OutRun Intelligence Platform
+    org: PTx Trimble
+    location: Winnipeg, MB
+    when: July 2026 – Present
+    points:
+      - "Own system-level integration of the OutRun autonomous tractor platform's intelligence stack (sensors, vision hardware, controllers), working at every layer as needed: wire harnessing, embedded controller firmware, the in-house custom Linux kernel, and ROS2 applications, plus MATLAB/Simulink modelling"
+      - Meet with suppliers to plan the platform's 1–5 year technology roadmap and evaluate and acquire new technology for the system as a whole
+      - Own machine provisioning across the platform, identifying pain points for engineering, test, and field teams and organizing improvements to the provisioning workflow
+      - Provide product and technical support to dealers, installers, and the test team
+
+  - title: Embedded Firmware Engineer, Peripheral Firmware
+    org: PTx Trimble
+    location: Winnipeg, MB
+    when: January – June 2026
+    points:
+      - Implemented USB support and drivers for STM32 F2/F4/F7 controllers (C, GCC toolchain) and extended in-house tooling to flash controllers over USB using a proprietary protocol
+      - "Owned development and maintenance of the OutRun System Manager (OSM), the Debian-packaged provisioning and fleet update system for Linux-based NVIDIA Jetson controllers: installs Debian packages and Docker images, flashes embedded controllers and peripherals over CAN, and updates Wi-Fi routers over SSH, avoiding full image rebuilds (Yocto-style) by swapping packages in and out"
+      - Designed a reboot-aware update state machine to sequence kernel and coprocessor updates that require restarts
+      - Built config-driven bulk controller flashing with conditional updates and targeting by serial number or CAN bus, plus update telemetry pushed to AWS S3; made OSM downgradeable to support backwards compatibility and engineering testing
+      - "Designed and implemented a dynamic ISOBUS implement-controller update sequence for tillage: detects a newly connected implement controller, compares its firmware to the running OutRun release, and updates it when needed"
+      - Unified install progress into a single MQTT topic with meaningful error codes, and added a pre-update hardware check to fail fast when a device is missing or not in an updatable state
+      - "Delivered GNSS corrections over IP via automotive Ethernet end-to-end: kernel networking configuration, harness build and wiring, and application configuration on the navigation receiver"
+      - Designed and implemented a unit-test framework and migrated all legacy tests to it; migrated several repositories from Bitbucket to GitHub
+      - Built seat-switch emulation for the hardware-in-the-loop (HIL) test rig's model tractor
+
+  - title: Undergraduate Research Assistant
+    org: UManitoba Electromagnetic Imaging Lab
+    location: Winnipeg, MB
+    when: May – December 2025
+    note: full-time May–Aug; 20 h/week Sep–Dec
+    points:
+      - Designed full PCB schematics and layouts for prototype and final-production magnetic field sensor hardware
+      - Selected and sourced all components, managing part evaluation and procurement through to functional prototypes
+      - Iterated through multiple hardware revisions, validating performance at each stage from bench testing through final qualification
+
+  - title: Controls Application Engineer Intern
+    org: MacDon Industries Ltd.
+    location: Winnipeg, MB
+    when: April 2024 – December 2025
+    note: full-time Apr–Aug 2024; 20 h/week Sep 2024–Dec 2025
+    points:
+      - Developed custom plotter and statistical analysis tool for J1939 trace files
+      - Implemented systems integration solutions using CAN, J1939, and ISOBUS communication protocols
+      - Optimized legacy codebase performance through refactoring in Lua, IQAN, and Crank IDE environments
+
+  - title: Embedded Design Assistant
+    org: Price Electronics
+    location: Winnipeg, MB
+    when: May – August 2023
+    points:
+      - Reverse-engineered and documented control algorithms for current and legacy embedded products
+      - Designed and prototyped novel airflow sensor solutions from concept through functional testing
+      - Developed automated test frameworks and generated calibration curves for sensor validation
+
+  - title: Undergraduate Research
+    org: UManitoba Electromagnetic Imaging Lab
+    location: Winnipeg, MB
+    when: May – September 2022
+    points:
+      - Developed embedded firmware for microcontroller communication using SPI and I2C protocols
+      - Designed and prototyped innovative hail monitoring device with potential patent application
+      - Collaborated with research team on electromagnetic imaging applications for weather monitoring systems
+
+  - title: HVAC Technician
+    org: Synoptic Heating and Cooling
+    location: Winnipeg, MB
+    when: March – September 2021
+    points:
+      - Installed and commissioned HVAC systems in residential and commercial construction projects
+      - Executed electrical installations following National Electrical Code standards and safety protocols
+      - Demonstrated versatility working both independently and in collaborative team environments
+
+  - title: First Soloist
+    org: Canada's Royal Winnipeg Ballet
+    location: Winnipeg, MB
+    when: July 2008 – 2020
+    points:
+      - Maintained principal artist roles through disciplined performance improvement and goal achievement
+      - Adapted performance techniques based on constructive feedback from artistic directors and peers
+      - Developed creative problem-solving skills through artistic interpretation and technical execution
+
+projects:
+  - name: "Bot-Hoven: Autonomous Piano-Playing Robot (Capstone)"
+    page: /projects/bot-hoven/
+    where: IEEE Winnipeg Section 2nd Prize
+    points:
+      - Architected ROS2 hardware interface layer supporting 20+ actuators with sub-millisecond timing precision
+      - Designed modular hardware abstraction layer integrating servo controllers, stepper drivers, and GPIO expanders
+      - Implemented batch communication protocols reducing I2C transaction overhead by 60%
+      - Developed real-time control systems for coordinated multi-actuator piano performance
+
+  - name: CAN Trace Plotter and Analyzer
+    where: MacDon Industries Ltd.
+    points:
+      - Developed Python desktop application using PyQt6 for visualizing automotive CAN bus communication traces
+      - Implemented multi-format file parsing supporting .trc, .asc, .bfl, and .csv trace files with DBC database integration
+      - Created drag-and-drop interface with up to 4 simultaneous plot displays and statistical analysis tools
+      - Delivered production-ready executable reducing manual diagnostic workflows for system debugging
+
+  - name: "TeaMate: Autonomous Tea-Making Robot"
+    page: /projects/teamate/
+    where: github.com/DobrowneyT/teamate
+    points:
+      - Designed 3-DOF robotic arm with Arduino Mega 2560 implementing inverse kinematics and PID control
+      - Developed C++ embedded systems with real-time sensor fusion and trajectory planning algorithms
+      - Achieved sub-millimeter positioning accuracy through automatic calibration and encoder feedback systems
+      - Integrated 5+ sensor types for autonomous brewing sequence with collision avoidance and safety features
+
+skills:
+  - { name: Programming, items: "C, C++, C#, Java, Python, Verilog, MATLAB/Simulink, LaTeX" }
+  - { name: High-performance computing, items: "MPI, CUDA, OpenMP" }
+  - { name: Hardware design, items: "FPGA, microcontrollers, PCB design (KiCad, Altium), circuit design, Verilog" }
+  - { name: Communication protocols, items: "CAN, J1939, ISOBUS, SPI, I2C, USB, Automotive Ethernet, MQTT, SSH" }
+  - { name: Software and tools, items: "ROS2, embedded Linux (custom kernel, systemd, Debian packaging), Docker, AWS S3, GCC, Git, GitHub, HIL testing, VS Code, Fusion 360" }
+  - { name: Operating systems, items: "Windows, macOS, Android, Linux (NVIDIA Jetson, STM32)" }
+
+education:
+  school: University of Manitoba
+  degree: B.Sc. in Computer Engineering (Co-op), With Distinction
+  when: Coursework completed Dec 2025 · conferred Feb 2026
+
+groups:
+  - title: Vice-Stick Corporate Relations / Director of Electronic Communications
+    org: UMES
+    when: 2021 – 2025
+    points:
+      - Successfully implemented a strategy to secure $20,000 in sponsorship funding
+      - Established and maintained positive relationships with industry professionals
+      - Designed and managed the development of a new website for UMES
+  - title: Command and Data Handling Systems Member
+    org: UMSATS
+    when: 2021 – 2023
+    points:
+      - Programmed a module in C to send timestamps from the satellite to the ground as requested
+      - Participated in workshops on the topics of Libero, SoftConsole, C, GitHub, CAN bus, FreeRTOS
+      - Performed unit tests to ensure that individual methods work as intended
+
+awards:
+  - { name: Faculty of Engineering Undergraduate Research Award, year: "2025" }
+  - { name: IEEE Winnipeg Section 2nd Prize for Capstone Project, year: "2025" }
+  - { name: Douglas and Beverly Ruth Centenary Award in Engineering, year: "2024" }
+  - { name: Dr. Lotfollah Shafai Bursary in Electrical and Computer Engineering, year: "2024" }
+  - { name: Amanda Hancox Award, year: "2023" }
+  - { name: Easton I. Lexier Award for Community Leadership, year: "2023" }
+  - { name: Faculty of Engineering NSERC Undergraduate Student Research Award, year: "2022" }
+  - { name: Peter F Bronfman Memorial Award, year: "2022" }
+  - { name: "Dean's Honour List, Price Faculty of Engineering", year: "2020 – 2025" }

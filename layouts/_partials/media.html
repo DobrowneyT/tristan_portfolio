@@ -1,0 +1,20 @@
+{{- /* Top-of-post media: a self-hosted video if params.video.src is set
+       (files live on the VPS under /srv/media/tristan, served at /media/),
+       otherwise the cover image or its placeholder. */ -}}
+{{- $v := .Params.video }}
+<figure class="post-media">
+  {{- if and $v $v.src }}
+  <video controls preload="metadata" playsinline{{ with $v.poster }} poster="{{ . }}"{{ end }}>
+    <source src="{{ $v.src }}" type="video/mp4">
+    Your browser can't play this video.{{ with $v.youtube }} <a href="{{ . }}">Watch it on YouTube</a>.{{ end }}
+  </video>
+  {{- else }}
+  {{- partial "cover.html" (dict "page" . "width" 1200 "eager" true) }}
+  {{- end }}
+  {{- with $v }}{{ if or .caption .youtube }}
+  <figcaption>
+    {{- with .caption }}{{ . }} {{ end }}
+    {{- with .youtube }}<a href="{{ . }}">Watch on YouTube&nbsp;↗</a>{{ end -}}
+  </figcaption>
+  {{- end }}{{ end }}
+</figure>

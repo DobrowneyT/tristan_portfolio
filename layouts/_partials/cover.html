@@ -1,0 +1,14 @@
+{{- /* A project's cover image: cover.jpg/png/webp in its page bundle, resized.
+       Until one exists, a placeholder block is shown instead.
+       Call with (dict "page" $page "width" 640 "eager" false). */ -}}
+{{- $p := .page }}
+{{- with $p.Resources.GetMatch "cover.*" }}
+  {{- $img := . }}
+  {{- if ne .MediaType.SubType "svg" }}{{ $img = .Resize (printf "%dx" $.width) }}{{ end }}
+  <img src="{{ $img.RelPermalink }}"{{ with $img.Width }} width="{{ . }}"{{ end }}{{ with $img.Height }} height="{{ . }}"{{ end }} alt="{{ $p.Params.coverAlt | default $p.Title }}"{{ if not $.eager }} loading="lazy"{{ end }}>
+{{- else }}
+  <div class="cover-placeholder" role="img" aria-label="{{ $p.Title }}: photo coming soon">
+    <span>{{ $p.Title }}</span>
+    <small>photo coming soon</small>
+  </div>
+{{- end }}
