@@ -10,43 +10,43 @@
   --font-body: "Newsreader", Georgia, serif;
   --font-head: "Newsreader", Georgia, serif;
   --font-mono: "IBM Plex Mono", ui-monospace, monospace;
-  --bg: #f6f3ec;
-  --bg-raised: #fbf9f4;
-  --fg: #24211d;
-  --muted: #6d665c;
-  --border: #ddd6c8;
-  --accent: #a3412a;
-  --accent-soft: #f1e2d8;
-  --code-bg: #ece7dc;
-  --placeholder: repeating-linear-gradient(135deg, #ebe6db 0 12px, #e5dfd2 12px 24px);
+  --bg: #fbfaf8;
+  --bg-raised: #ffffff;
+  --fg: #1c2126;
+  --muted: #5f6b76;
+  --border: #e3e0da;
+  --accent: #2b7a78;
+  --accent-soft: #e3f0ef;
+  --code-bg: #f3f1ec;
+  --placeholder: repeating-linear-gradient(135deg, #ece9e3 0 12px, #e5e1da 12px 24px);
   color-scheme: light;
 }
 
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) {
-    --bg: #1a1815;
-    --bg-raised: #211e1a;
-    --fg: #ebe5d9;
-    --muted: #a39b8d;
-    --border: #36312a;
-    --accent: #e3906b;
-    --accent-soft: #3a261d;
-    --code-bg: #14120f;
-    --placeholder: repeating-linear-gradient(135deg, #221f1b 0 12px, #27231e 12px 24px);
+    --bg: #0f1419;
+    --bg-raised: #161d24;
+    --fg: #e6e4e0;
+    --muted: #97a1ab;
+    --border: #26303a;
+    --accent: #5fb3b3;
+    --accent-soft: #17302f;
+    --code-bg: #0b1015;
+    --placeholder: repeating-linear-gradient(135deg, #18212a 0 12px, #1c2630 12px 24px);
     color-scheme: dark;
   }
 }
 
 :root[data-theme="dark"] {
-  --bg: #1a1815;
-  --bg-raised: #211e1a;
-  --fg: #ebe5d9;
-  --muted: #a39b8d;
-  --border: #36312a;
-  --accent: #e3906b;
-  --accent-soft: #3a261d;
-  --code-bg: #14120f;
-  --placeholder: repeating-linear-gradient(135deg, #221f1b 0 12px, #27231e 12px 24px);
+  --bg: #0f1419;
+  --bg-raised: #161d24;
+  --fg: #e6e4e0;
+  --muted: #97a1ab;
+  --border: #26303a;
+  --accent: #5fb3b3;
+  --accent-soft: #17302f;
+  --code-bg: #0b1015;
+  --placeholder: repeating-linear-gradient(135deg, #18212a 0 12px, #1c2630 12px 24px);
   color-scheme: dark;
 }
 
@@ -176,10 +176,7 @@ nav a[aria-current="page"] { box-shadow: inset 0 -2px var(--accent); }
 .hero { padding-block: 4.5rem 3rem; max-width: 44rem; }
 .hero h1 { font-size: clamp(2.4rem, 7vw, 3.75rem); margin: 0; }
 .tagline {
-  margin: 1rem 0 0;
-  padding-top: 1rem;
-  border-top: 2px solid var(--accent);
-  width: fit-content;
+  margin: 0.75rem 0 0;
   color: var(--muted);
   font-size: clamp(1.1rem, 2.4vw, 1.3rem);
 }
