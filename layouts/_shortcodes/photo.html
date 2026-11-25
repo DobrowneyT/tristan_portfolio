@@ -1,0 +1,17 @@
+{{- /* A dated photo from the page bundle.
+       {{< photo src="photos/2024-11-11-x.jpg" date="2024-11-11" alt="..." >}}Caption{{< /photo >}}
+       Add tall="true" for portrait shots, which are shown narrower.
+       Images must be committed with metadata stripped (no GPS): the repo is public. */ -}}
+{{- $src := .Get "src" }}
+{{- with .Page.Resources.Get $src }}
+  {{- $r := .Resize "1200x" }}
+  <figure class="photo{{ if $.Get "tall" }} tall{{ end }}">
+    <a href="{{ .RelPermalink }}"><img src="{{ $r.RelPermalink }}" width="{{ $r.Width }}" height="{{ $r.Height }}" alt="{{ $.Get "alt" | default ($.Inner | plainify | strings.TrimSpace) }}" loading="lazy"></a>
+    <figcaption>
+      {{- with $.Get "date" }}<time class="when" datetime="{{ . }}">{{ (time .).Format "2 January 2006" }}</time> {{ end -}}
+      {{ $.Inner | strings.TrimSpace | $.Page.RenderString }}
+    </figcaption>
+  </figure>
+{{- else }}
+  {{- errorf "photo %q not found in %s" $src $.Page.File.Path }}
+{{- end }}

@@ -5,8 +5,9 @@ date: 2025-03-01
 period: "Winter 2025"
 weight: 20
 status: stub
-context: "Robotics project with Evan Evaniuk"
+context: "ECE 4180 Intro to Robotics, with Evan Evaniuk"
 role: "Firmware: motion control, calibration and the brewing state machine"
+coverAlt: "The arm lowering a tea bag into a mug"
 summary: "A 3-DOF arm that picks up a tea bag, steeps it for exactly as long as you asked, agitates it, then throws it away."
 stack: ["C++", "Arduino (MegaPi)", "PID control", "State machines"]
 links:
@@ -25,6 +26,12 @@ TeaMate is a three-joint robot arm on a Makeblock MegaPi (an Arduino Mega 2560).
 - **A seven-state machine** runs the brew: setup → wait for cup → fetch bag → into cup → count down and agitate → bin → done. Timing uses `millis()`, so nothing blocks.
 - **Five kinds of input:** joint encoders, an ultrasonic cup detector, a line sensor, a rotary encoder for the UI, and an OLED display with LEDs and a buzzer for feedback.
 
-## The part that didn't make it
+## Kinematics
 
-We wrote a Jacobian-based inverse-kinematics and path-planning library for the arm. The version that shipped moves through taught joint-space waypoints instead. The full write-up will cover why.
+The project also includes a Jacobian-based inverse-kinematics and path-planning library for the arm, built from its Denavit–Hartenberg model. The full write-up will cover how it works.
+
+## In photos
+
+{{< photo src="photos/2025-03-16-drive-motor.jpg" date="2025-03-16" alt="A geared DC motor mounted in a blue Makeblock frame" >}}
+One of the arm's geared drive motors in the Makeblock frame.
+{{< /photo >}}
