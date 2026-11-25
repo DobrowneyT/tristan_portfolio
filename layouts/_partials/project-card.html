@@ -1,17 +1,17 @@
 <article class="card">
   <a class="card-media" href="{{ .RelPermalink }}" tabindex="-1" aria-hidden="true">
     {{- partial "cover.html" (dict "page" . "width" 640) }}
-    {{- if eq .Params.status "stub" }}<span class="badge card-badge">write-up coming</span>{{ end }}
   </a>
   <div class="card-body">
-    <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
     <p class="meta">
-      {{- .Date.Format "January 2006" }}
-      {{- with .Params.context }} · {{ . }}{{ end -}}
+      {{- .Date.Format "2006" }}
+      {{- with .Params.context }} · {{ . }}{{ end }}
+      {{- if eq .Params.status "stub" }} · <span class="pending">write-up coming</span>{{ end -}}
     </p>
+    <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
     <p>{{ .Params.summary }}</p>
     {{- with .Params.stack }}
-    <ul class="tags" aria-label="Technologies">{{ range . }}<li>{{ . }}</li>{{ end }}</ul>
+    <p class="stack"><span class="visually-hidden">Built with: </span>{{ delimit . " · " }}</p>
     {{- end }}
   </div>
 </article>
