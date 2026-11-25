@@ -1,0 +1,14 @@
+{{- /* A dated video clip served from the VPS (/media/ is not in git).
+       {{< clip src="/media/bot-hoven/2024-10-09-x.mp4" date="2024-10-09" >}}Caption{{< /clip >}}
+       The poster is the same path ending in .jpg. Add wide="true" for landscape clips. */ -}}
+{{- $src := .Get "src" }}
+<figure class="clip{{ if not (.Get "wide") }} tall{{ end }}">
+  <video controls preload="none" playsinline poster="{{ replaceRE `\.mp4$` ".jpg" $src }}">
+    <source src="{{ $src }}" type="video/mp4">
+    Your browser can't play this video.
+  </video>
+  <figcaption>
+    {{- with .Get "date" }}<time class="when" datetime="{{ . }}">{{ (time .).Format "2 January 2006" }}</time> {{ end -}}
+    {{ .Inner | strings.TrimSpace | $.Page.RenderString }}
+  </figcaption>
+</figure>

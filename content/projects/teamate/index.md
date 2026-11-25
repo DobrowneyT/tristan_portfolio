@@ -13,8 +13,9 @@ stack: ["C++", "Arduino (MegaPi)", "PID control", "State machines"]
 links:
   - { name: "GitHub", url: "https://github.com/DobrowneyT/teamate" }
 video:
-  src: ""        # e.g. /media/teamate/demo.mp4
-  poster: ""
+  src: "/media/teamate/demo.mp4"
+  poster: "/media/teamate/demo.jpg"
+  caption: "TeaMate making a cup of tea, start to finish."
   youtube: ""    # add the YouTube link here
 ---
 TeaMate is a three-joint robot arm on a Makeblock MegaPi (an Arduino Mega 2560). You set a steep time with a rotary encoder and put your cup down. It picks up a tea bag, lowers it in, dips it gently while counting down, plays a tune when your tea is ready, and drops the bag in the bin.

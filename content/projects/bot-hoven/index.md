@@ -14,8 +14,9 @@ links:
   - { name: "GitHub organisation", url: "https://github.com/bot-hoven" }
   - { name: "YouTube channel", url: "https://www.youtube.com/@Bot-hoven" }
 video:
-  src: ""        # e.g. /media/bot-hoven/demo.mp4 once uploaded to the VPS
-  poster: ""     # e.g. /media/bot-hoven/poster.jpg
+  src: "/media/bot-hoven/chopin.mp4"
+  poster: "/media/bot-hoven/chopin.jpg"
+  caption: "Bot-Hoven playing a continuation of Chopin's Nocturne Op. 9 No. 2, written by our music-generation model."
   youtube: "https://www.youtube.com/@Bot-hoven"
 ---
 Bot-Hoven was our six-person capstone at the University of Manitoba, sponsored by PTx Trimble. Two robotic hands, built from servo-driven fingers and solenoids, ride on stepper-driven carriages along a piano keyboard. A Raspberry Pi running ROS2 coordinates them. It won second prize at the IEEE Winnipeg Section capstone competition in 2025.
@@ -31,7 +32,11 @@ I owned the **hardware interface layer**, the code that turns ROS2's view of the
 
 The rest of the team built the hands and electronics, the simulator, and a reinforcement-learning experiment based on Google's RoboPianist.
 
-## In photos
+## Photos and video
+
+{{< clip src="/media/bot-hoven/2024-10-09-first-servo.mp4" date="2024-10-09" >}}
+The first test: a potentiometer turning a servo.
+{{< /clip >}}
 
 {{< photo src="photos/2024-11-11-pi-driving-stepper-driver.jpg" date="2024-11-11" tall="true" alt="A Raspberry Pi wired through a breadboard to a CL42T stepper driver" >}}
 The Pi driving a stepper driver straight off a breadboard. Linux couldn't produce steady step pulses, which is why a Pico 2 took the job later.
@@ -44,6 +49,18 @@ The first linear rail, with printed mounts.
 {{< photo src="photos/2024-11-17-belt-and-carriage.jpg" date="2024-11-17" tall="true" alt="A rail with a belt, a carriage and a stepper motor on a plywood board" >}}
 Belt, carriage and stepper on a plywood board. Three days later it moved under software control.
 {{< /photo >}}
+
+{{< clip src="/media/bot-hoven/2024-11-20-belt-moving.mp4" date="2024-11-20" >}}
+The carriage moving along the belt for the first time.
+{{< /clip >}}
+
+{{< clip src="/media/bot-hoven/2025-01-12-cpp-servos-solenoids.mp4" date="2025-01-12" >}}
+Servos and solenoids driven over I2C from plain C++, before ROS2 was involved.
+{{< /clip >}}
+
+{{< clip src="/media/bot-hoven/2025-01-20-ros2-control-shared-i2c.mp4" date="2025-01-20" >}}
+The same actuators under ros2_control, with every plugin sharing one I2C bus.
+{{< /clip >}}
 
 {{< photo src="photos/2025-02-07-tempo-rig.jpg" date="2025-02-07" alt="A bench setup: a solenoid clamped over a limit switch, wired to breadboards" >}}
 The tempo rig: a solenoid clamped over a limit switch, timed by an Arduino Nano. The fingers reached about 238 BPM against a 120 BPM target.
@@ -73,6 +90,18 @@ Late in the project, a transistor on our power distribution board failed and put
 The team and our advisor, just before the final presentation.
 {{< /photo >}}
 
+{{< clip src="/media/bot-hoven/2025-04-04-homing.mp4" date="2025-04-04" >}}
+Homing: both hands run to their limit switches, then the robot measures the keyboard in steps.
+{{< /clip >}}
+
+{{< clip src="/media/bot-hoven/2025-04-24-mary-had-a-little-lamb.mp4" date="2025-04-24" >}}
+Mary Had a Little Lamb, with me standing by.
+{{< /clip >}}
+
 {{< photo src="photos/2025-04-29-finished-robot.jpg" date="2025-04-29" alt="The finished robot: two hands on a rail above the keyboard" >}}
 The finished robot.
 {{< /photo >}}
+
+{{< clip src="/media/bot-hoven/2025-05-08-a-major-scale.mp4" date="2025-05-08" >}}
+An A major scale, which mixes white and black keys.
+{{< /clip >}}

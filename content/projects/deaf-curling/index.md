@@ -10,6 +10,10 @@ role: "Most of the ESP32 firmware for both devices"
 coverAlt: "A sweeper unit on a breadboard: an ESP32 and red, yellow and green LEDs"
 summary: "In curling, the skip shouts sweeping calls down the ice. We built a wireless device that shows those calls as coloured lights, so deaf players can see them."
 stack: ["ESP32", "ESP-NOW", "C++", "PlatformIO"]
+video:
+  src: "/media/deaf-curling/demo.mp4"
+  poster: "/media/deaf-curling/demo.jpg"
+  caption: "The demo: one skip unit and three sweeper units, all on breadboards."
 ---
 In curling, the skip stands at the far end of the sheet and shouts to the sweepers when to sweep. For deaf and hard-of-hearing curlers, that channel doesn't work. Our team built a pair of ESP32 devices to replace the shout with light: the skip's handheld unit sends calls over ESP-NOW (the ESP32's low-latency peer-to-peer radio), and the sweeper's unit shows them on red, yellow and green LEDs, like a traffic light.
 

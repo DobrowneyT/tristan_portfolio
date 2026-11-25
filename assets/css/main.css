@@ -337,8 +337,10 @@ nav a[aria-current="page"] { box-shadow: inset 0 -2px var(--accent); }
 .prose img { border-radius: 3px; }
 .prose figure { margin: 1.75rem 0; }
 .photo img { display: block; width: 100%; height: auto; border: 1px solid var(--border); }
-.photo.tall { max-width: 26rem; }
-.photo figcaption .when { margin-right: 0.4rem; color: var(--fg); }
+.photo.tall, .clip.tall { max-width: 26rem; }
+.clip video { display: block; width: 100%; height: auto; border: 1px solid var(--border); border-radius: 3px; background: var(--code-bg); }
+.post-media video { max-height: 80vh; background: var(--code-bg); }
+.photo figcaption .when, .clip figcaption .when { margin-right: 0.4rem; color: var(--fg); }
 .prose table { border-collapse: collapse; width: 100%; margin: 1.5rem 0; font-size: 0.95rem; }
 .prose th, .prose td { border-bottom: 1px solid var(--border); padding: 0.45rem 0.6rem; text-align: left; }
 
