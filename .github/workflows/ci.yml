@@ -1,0 +1,48 @@
+# Checks that the site still builds and that its links work, on GitHub's own
+# runners. Nothing here deploys: the VPS pulls signed commits from main itself.
+name: CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  site:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      # Same Hugo as the VPS (`hugo version` there). Bump both together.
+      HUGO_VERSION: 0.170.1
+      HUGO_SHA256: 841a5462853aefc9942e4de1e8a5d75584b6a5181941e6ad3f1d745190e03cd8
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Install Hugo (checksum-verified)
+        run: |
+          f="hugo_${HUGO_VERSION}_linux-amd64.tar.gz"
+          curl -fsSLo "$RUNNER_TEMP/$f" "https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/$f"
+          echo "${HUGO_SHA256}  $RUNNER_TEMP/$f" | sha256sum -c -
+          tar -xzf "$RUNNER_TEMP/$f" -C "$RUNNER_TEMP" hugo
+          echo "$RUNNER_TEMP" >> "$GITHUB_PATH"
+
+      - name: Build (same flags as site-sync)
+        run: hugo --gc --minify --cleanDestinationDir --panicOnWarning
+
+      - name: Check internal links
+        uses: lycheeverse/lychee-action@e7477775783ea5526144ba13e8db5eec57747ce8 # v2.9.0
+        with:
+          args: --offline --no-progress --root-dir "${{ github.workspace }}/public" './public/**/*.html'
+          fail: true
+
+      - name: Shellcheck deploy scripts
+        run: shellcheck deploy/site-sync/site-sync.sh scripts/build-resume.sh
