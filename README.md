@@ -112,7 +112,7 @@ systemctl list-timers site-sync.timer   # when it runs next
 systemctl status site-sync              # "failed" if the last run had any error
 ```
 
-Security note: the service runs as root because `kidnet/server/install.sh` installs packages, units and nginx config. Anyone who can push to `main` of a repo that has a deploy command can therefore run code as root on the VPS. That is the same trust as running `sudo server/install.sh` by hand after every pull.
+Security note: the service runs as root because `kidnet/server/install.sh` installs packages, units and nginx config, so a commit that reaches a clone with a deploy command runs as root on the VPS. That is why site-sync only pulls **signed** commits: every new commit must carry a good SSH signature from a key in `/etc/site-sync/allowed_signers` (see "Server hardening" below). An unsigned commit, for example one pushed with a stolen GitHub login, or a pull request merged with GitHub's web button, is logged as `has no good signature … not pulling` and nothing changes on the VPS until a signed commit replaces it.
 
 DNS needs no change: the wildcard `*` A record on dobrowney.com already points every subdomain at the VPS. The portfolio repos are public, so the clones pull over HTTPS without credentials. Kidnet's existing clone keeps whatever remote it already uses.
 
@@ -213,6 +213,37 @@ curl -s  https://tristan.dobrowney.com/nope | grep -o 'Page not found'
 
 The build runs as `ubuntu` (`runuser`), so `public/` and Hugo's caches belong to `ubuntu` like the rest of the clone. To upgrade Hugo later, repeat (a) with a new `V`.
 
+### 6. Server hardening
+
+Done on 2026-11-28 after a security audit. Redo it on a new server.
+
+```bash
+# a) SSH: keys only, no root login. 00- sorts before cloud-init's 50- file, and sshd keeps the first value.
+#    Keep the ubuntu password: OVH's web console (KVM) needs it if SSH ever breaks.
+printf 'PasswordAuthentication no\nKbdInteractiveAuthentication no\nPermitRootLogin no\n' | sudo tee /etc/ssh/sshd_config.d/00-hardening.conf
+sudo sshd -t && sudo systemctl reload ssh     # then test a NEW login before closing this one
+
+# b) Firewall: only ssh, http, https. Docker-published ports are bound to 127.0.0.1, so they stay private.
+sudo ufw default deny incoming && sudo ufw default allow outgoing
+sudo ufw allow 22/tcp && sudo ufw allow 80/tcp && sudo ufw allow 443/tcp
+sudo ufw --force enable
+
+# c) nginx: hide the version, and answer unknown host names with a 404 (HTTP) or a refused handshake (HTTPS)
+#    instead of whichever site nginx loaded first (it used to be the Torn Dashboard)
+sudo sed -i -E 's/^(\s*)server_tokens .*;/\1server_tokens off;/' /etc/nginx/nginx.conf
+sudo install -m 644 /srv/sites/tristan_portfolio/deploy/nginx/catch-all.conf /etc/nginx/sites-available/catch-all
+sudo ln -sfn /etc/nginx/sites-available/catch-all /etc/nginx/sites-enabled/catch-all
+sudo rm -f /etc/nginx/sites-enabled/default
+sudo nginx -t && sudo systemctl reload nginx
+
+# d) Signed deploys: site-sync pulls only commits signed by a key in this file (git's allowed-signers format)
+echo '92229541+DobrowneyT@users.noreply.github.com namespaces="git" ssh-ed25519 AAAA… (laptop key)' | sudo tee /etc/site-sync/allowed_signers
+```
+
+On the laptop, git signs every commit with the SSH key (`git config --global gpg.format ssh`, `user.signingkey ~/.ssh/id_ed25519.pub`, `commit.gpgsign true`). The same key is registered on GitHub as a *signing* key, so commits show "Verified". To deploy from another machine, give it its own key and add a line to `allowed_signers` on the VPS (and to `~/.config/git/allowed_signers` on the laptop, so `git log --show-signature` can check it there).
+
+GitHub side: the VPS clones use read-only per-repo deploy keys (`~/.ssh/config` host aliases). Don't put an account-wide SSH key on a server, because it can push to every repo.
+
 ## Adding another *.dobrowney.com project later
 
 1. Clone it (`/srv/sites/<repo>` for a static site; anywhere for an app), on `main`, owned by `ubuntu`.
@@ -223,4 +254,6 @@ No systemd change is needed: the list is read on every run.
 
 ## 2027: retiring the torn projects
 
-Nothing here depends on them. Delete their lines from `crontab -e` (torn-dashboard, dashboard-dev, mug-bot ×2, torn-armoury, choonbot and the docker-prune line) and stop their containers. site-sync keeps running on its own.
+Nothing here depends on them. Delete their lines from `crontab -e` (torn-dashboard, dashboard-dev, mug-bot ×2, choonbot and the docker-prune line) and stop their containers. site-sync keeps running on its own.
+
+torn-armoury is already retired (2026-11-28): `torn-armoury.service` is stopped and disabled, its cron line is commented out, and port 3000 is closed by the firewall. Its files are still in `~/torn/torn-armoury`.

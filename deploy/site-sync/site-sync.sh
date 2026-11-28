@@ -14,6 +14,10 @@
 #   1. Pull: git fetch + fast-forward of the branch the clone has checked out
 #      (production clones sit on `main` and stay there). Local commits or edits
 #      are never overwritten: the repo is reported and skipped.
+#      Signed commits only: if /etc/site-sync/allowed_signers exists (git's SSH
+#      allowed-signers format), every new commit must carry a good signature
+#      from a key listed there, or the repo is neither pulled nor deployed. A
+#      stolen GitHub login or deploy key can then push, but not reach the VPS.
 #   2. Deploy, only if the line has a command and HEAD differs from the last
 #      SUCCESSFUL deploy (marker in /var/lib/site-sync). So a failed deploy is
 #      retried on the next run, and an unchanged repo costs one `git fetch`.
@@ -29,6 +33,7 @@ set -uo pipefail
 
 LIST="${SITE_SYNC_LIST:-/etc/site-sync/repos.list}"
 STATE="${SITE_SYNC_STATE:-/var/lib/site-sync}"
+SIGNERS="${SITE_SYNC_SIGNERS:-/etc/site-sync/allowed_signers}"
 [ -r "$LIST" ] || { echo "site-sync: cannot read $LIST" >&2; exit 1; }
 mkdir -p "$STATE"
 
@@ -59,6 +64,17 @@ while IFS= read -r -u 3 line || [ -n "$line" ]; do
   fi
   old="$(g rev-parse HEAD)"
   new="$(g rev-parse FETCH_HEAD)"
+  if [ "$old" != "$new" ] && [ -r "$SIGNERS" ]; then
+    unsigned=""
+    for c in $(g rev-list "$old..$new"); do
+      g -c gpg.ssh.allowedSignersFile="$SIGNERS" verify-commit "$c" >/dev/null 2>&1 \
+        || { unsigned="$c"; break; }
+    done
+    if [ -n "$unsigned" ]; then
+      echo "$repo: commit ${unsigned:0:7} on origin/$branch has no good signature from $SIGNERS; not pulling" >&2
+      fail=1; continue
+    fi
+  fi
   if [ "$old" != "$new" ]; then
     if g merge --ff-only --quiet FETCH_HEAD; then
       echo "$repo: $branch ${old:0:7} -> ${new:0:7} ($(g log -1 --format=%s))"
